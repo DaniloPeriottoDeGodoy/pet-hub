@@ -10,7 +10,14 @@ namespace PetHub.AppService.UseCases.Pet.Get
         {
             var pet = await petRepository.GetByIdAsync(query.PetId);
 
+            if (pet is null)
+            {
+                return Result.Fail<Domain.Entities.Pet>("Pet not found");
+            }
+
             return pet;
         }
+
+
     }
 }

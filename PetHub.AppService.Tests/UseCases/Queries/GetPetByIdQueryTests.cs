@@ -46,5 +46,32 @@ namespace PetHub.AppService.Tests.UseCases.Queries
                 x => x.GetByIdAsync(id), Times.Once()
             );
         }
+
+        [Test]
+        public async Task Should_Return_Error_When_Pet_Not_Found()
+        {
+            // Arrange
+            Guid id = Guid.NewGuid();
+            var query = new GetPetByIdQuery(id);
+
+            Pet petNotFound = null;
+            _petRepository
+                .Setup(x => x.GetByIdAsync(id))
+                .ReturnsAsync(Result.Fail<Pet>("Pet not found"));
+
+            // Act
+            Result<Pet> result = await _handler.Handle(query);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.IsFailed, Is.True);
+            Assert.That(result.Errors.Select(e => e.Message), Does.Contain("Pet not found"));
+            
+
+            _petRepository.Verify
+            (
+                x => x.GetByIdAsync(id), Times.Once()
+            );
+        }
     }
 }
