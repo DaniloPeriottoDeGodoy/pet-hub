@@ -2,7 +2,7 @@
 using MediatR;
 using PetHub.Domain.Interfaces;
 
-namespace PetHub.AppService.UseCases.Pet
+namespace PetHub.AppService.UseCases.Pet.Create
 {
     public class CreatePetHandler : IRequestHandler<CreatePetCommand, Result>
     {

@@ -2,15 +2,15 @@
 using Moq;
 using NUnit.Framework;
 using PetHub.AppService.UseCases;
-using PetHub.AppService.UseCases.Pet;
+using PetHub.AppService.UseCases.Pet.Create;
 using PetHub.Domain.Entities;
 using PetHub.Domain.Enums;
 using PetHub.Domain.Interfaces;
 
-namespace PetHub.AppService.Tests.UseCases
+namespace PetHub.AppService.Tests.UseCases.Commands
 {
     [TestFixture]
-    public class CreatePetTests
+    public class CreatePetCommandTests
     {
         private CreatePetHandler _handler;
         private Mock<IPetRepository> _petRepository;
