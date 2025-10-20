@@ -2,13 +2,9 @@
 {
     public class Pet
     {
-        public Pet()
+        public Pet(string name)
         {
             Id = Guid.NewGuid();
-        }
-
-        public Pet(string name) : base()
-        {
             Name = name;
 
             this.Validate();
