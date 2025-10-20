@@ -17,7 +17,7 @@ namespace PetHub.AppService.UseCases.Pet
         {
             try
             {
-                var pet = new Domain.Entities.Pet(request.Name);
+                var pet = new Domain.Entities.Pet(request.Name, request.Specie);
 
                 if (pet.IsInvalid)
                     return Result.Fail(pet.Errors);

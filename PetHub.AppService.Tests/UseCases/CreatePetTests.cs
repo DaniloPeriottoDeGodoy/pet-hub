@@ -4,6 +4,7 @@ using NUnit.Framework;
 using PetHub.AppService.UseCases;
 using PetHub.AppService.UseCases.Pet;
 using PetHub.Domain.Entities;
+using PetHub.Domain.Enums;
 using PetHub.Domain.Interfaces;
 
 namespace PetHub.AppService.Tests.UseCases
@@ -27,7 +28,7 @@ namespace PetHub.AppService.Tests.UseCases
         {
             // Arrange
             var name = "Pretinha";
-            var command = new CreatePetCommand(name);
+            var command = new CreatePetCommand(name, Species.Dog);
 
             // Act
             var result = await _handler.Handle(command, default);
@@ -47,7 +48,7 @@ namespace PetHub.AppService.Tests.UseCases
         {
             // Arrange
             string emptyName = string.Empty;
-            var command = new CreatePetCommand(emptyName);
+            var command = new CreatePetCommand(emptyName, Species.Dog);
 
             // Act            
             var result = await _handler.Handle(command, default);
@@ -56,6 +57,28 @@ namespace PetHub.AppService.Tests.UseCases
             Assert.That(result.IsFailed, Is.True);
             Assert.That(result.Errors.Any(), Is.True);
             Assert.That(result.Errors.Select(e => e.Message), Does.Contain("Pet name is invalid"));
+
+            _petRepository.Verify
+            (
+                x => x.AddAsync(It.IsAny<Pet>()), Times.Never()
+            );
+        }
+
+        [Test]
+        public async Task When_Creating_Pet_Should_Return_Error_If_Pet_Specie_Is_Invalid()
+        {
+            // Arrange
+            var invalidSpecie = (Species)999;
+
+            var command = new CreatePetCommand("Pretinha", invalidSpecie);
+
+            // Act            
+            var result = await _handler.Handle(command, default);
+
+            // Assert
+            Assert.That(result.IsFailed, Is.True);
+            Assert.That(result.Errors.Any(), Is.True);
+            Assert.That(result.Errors.Select(e => e.Message), Does.Contain("Pet specie is invalid"));
 
             _petRepository.Verify
             (

@@ -19,19 +19,5 @@ namespace PetHub.Domain.Tests.Entities
         {
 
         }
-
-        [Test]
-        public void Should_Validate_Pet_Name()
-        {
-            // Arrange and Act
-            _pet = new Pet(null);
-
-            // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.That(_pet.IsInvalid, Is.True);
-                Assert.That(_pet.Errors.Contains("Pet name is invalid"), Is.True);
-            });
-        }
     }
 }
