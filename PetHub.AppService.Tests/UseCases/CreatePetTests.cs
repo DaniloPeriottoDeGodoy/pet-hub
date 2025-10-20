@@ -43,7 +43,7 @@ namespace PetHub.AppService.Tests.UseCases
         }
 
         [Test]
-        public async Task When_Createing_Pet_Should_Return_Error_If_Pet_Name_Is_Invalid()
+        public async Task When_Creating_Pet_Should_Return_Error_If_Pet_Name_Is_Invalid()
         {
             // Arrange
             string emptyName = string.Empty;
@@ -54,7 +54,7 @@ namespace PetHub.AppService.Tests.UseCases
 
             // Assert
             Assert.That(result.IsFailed, Is.True);
-            Assert.That(result.Errors.Count(), Is.True);
+            Assert.That(result.Errors.Any(), Is.True);
             Assert.That(result.Errors.Select(e => e.Message), Does.Contain("Pet name is invalid"));
 
             _petRepository.Verify

@@ -17,15 +17,14 @@ namespace PetHub.AppService.UseCases.Pet
         {
             try
             {
-                var newPet = new Domain.Entities.Pet
-                {
-                    Name = request.Name,
-                };
+                var pet = new Domain.Entities.Pet(request.Name);
 
-                await _petRepository.AddAsync(newPet);
+                if (pet.IsInvalid)
+                    return Result.Fail(pet.Errors);
+
+                await _petRepository.AddAsync(pet);
 
                 return Result.Ok();
-
             }
             catch (Exception e)
             {
