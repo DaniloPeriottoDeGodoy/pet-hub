@@ -1,9 +1,10 @@
-﻿using MediatR;
+﻿using FluentResults;
+using MediatR;
 using PetHub.Domain.Interfaces;
 
 namespace PetHub.AppService.UseCases.Pet
 {
-    public class CreatePetHandler : IRequestHandler<CreatePetCommand, Domain.Entities.Pet>
+    public class CreatePetHandler : IRequestHandler<CreatePetCommand, Result>
     {
         private readonly IPetRepository _petRepository;
 
@@ -12,16 +13,24 @@ namespace PetHub.AppService.UseCases.Pet
             _petRepository = petRepository;
         }
 
-        public async Task<Domain.Entities.Pet> Handle(CreatePetCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(CreatePetCommand request, CancellationToken cancellationToken)
         {
-            var newPet = new Domain.Entities.Pet
+            try
             {
-                Name = request.Name,
-            };
+                var newPet = new Domain.Entities.Pet
+                {
+                    Name = request.Name,
+                };
 
-            await _petRepository.AddAsync(newPet);
+                await _petRepository.AddAsync(newPet);
 
-            return newPet;
+                return Result.Ok();
+
+            }
+            catch (Exception e)
+            {
+                return Result.Fail(e.Message);
+            }
         }
     }
 }

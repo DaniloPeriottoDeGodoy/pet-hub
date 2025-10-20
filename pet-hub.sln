@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetHub.Domain", "PetHub.Dom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetHub.Infrastructure", "PetHub.Infrastructure\PetHub.Infrastructure.csproj", "{6C765F5D-F1C0-4E9A-A6FC-B3C823D48A83}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetHub.Domain.Tests", "PetHub.Domain.Tests\PetHub.Domain.Tests.csproj", "{D7F50BBF-A949-41B2-BBC7-042381A4138A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{6C765F5D-F1C0-4E9A-A6FC-B3C823D48A83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C765F5D-F1C0-4E9A-A6FC-B3C823D48A83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C765F5D-F1C0-4E9A-A6FC-B3C823D48A83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7F50BBF-A949-41B2-BBC7-042381A4138A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7F50BBF-A949-41B2-BBC7-042381A4138A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7F50BBF-A949-41B2-BBC7-042381A4138A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7F50BBF-A949-41B2-BBC7-042381A4138A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +56,7 @@ Global
 		{48E52C57-85AC-46F1-9113-7E52607A90B5} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{70D84BF9-B052-47D2-AEEE-00FD80D8FE35} = {9C832EF6-2F45-4783-AD1E-0BA7556CEEA8}
 		{6C765F5D-F1C0-4E9A-A6FC-B3C823D48A83} = {35A04D78-E531-4185-A454-D6EB076E150E}
+		{D7F50BBF-A949-41B2-BBC7-042381A4138A} = {9C832EF6-2F45-4783-AD1E-0BA7556CEEA8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {861DCFA1-FD43-42D6-894E-7B3AEB415701}

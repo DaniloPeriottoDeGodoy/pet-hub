@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using FluentResults;
+using Moq;
 using NUnit.Framework;
 using PetHub.AppService.UseCases;
 using PetHub.AppService.UseCases.Pet;
@@ -29,16 +30,36 @@ namespace PetHub.AppService.Tests.UseCases
             var command = new CreatePetCommand(name);
 
             // Act
-            Domain.Entities.Pet result = await _handler.Handle(command, default);
+            var result = await _handler.Handle(command, default);
 
             // Assert
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Name, Is.EqualTo(name));
-            Assert.That(result.Id, Is.Not.EqualTo(Guid.Empty));
+            Assert.That(result.IsSuccess, Is.True);            
 
             _petRepository.Verify
             (
                 x => x.AddAsync(It.Is<Pet>(p => p.Name == command.Name)), Times.Once()
+            );
+        }
+
+        [Test]
+        public async Task When_Createing_Pet_Should_Return_Error_If_Pet_Name_Is_Invalid()
+        {
+            // Arrange
+            string emptyName = string.Empty;
+            var command = new CreatePetCommand(emptyName);
+
+            // Act            
+            var result = await _handler.Handle(command, default);
+
+            // Assert
+            Assert.That(result.IsFailed, Is.True);
+            Assert.That(result.Errors.Count(), Is.True);
+            Assert.That(result.Errors.Select(e => e.Message), Does.Contain("Pet name is invalid"));
+
+            _petRepository.Verify
+            (
+                x => x.AddAsync(It.IsAny<Pet>()), Times.Never()
             );
         }
     }
