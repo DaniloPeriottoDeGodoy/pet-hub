@@ -6,6 +6,6 @@ namespace PetHub.Domain.Interfaces
     public interface IPetRepository
     {
         Task<Result> AddAsync(Pet newPet);
-        Task<Result<Pet>> GetAsync(Guid id);
+        Task<Result<Pet>> GetByIdAsync(Guid id);
     }
 }

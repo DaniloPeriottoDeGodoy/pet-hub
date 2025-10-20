@@ -19,7 +19,7 @@ namespace PetHub.AppService.Tests.UseCases.Queries
         {
             _petRepository = new Mock<IPetRepository>();
 
-            _handler = new GetPetByIdQueryHandler();
+            _handler = new GetPetByIdQueryHandler(_petRepository.Object);
         }
 
         [Test]
@@ -31,7 +31,7 @@ namespace PetHub.AppService.Tests.UseCases.Queries
 
             var petFound = new Pet("Buddy", Species.Dog) { Id = id };
             _petRepository
-                .Setup(x => x.GetAsync(id))
+                .Setup(x => x.GetByIdAsync(id))
                 .ReturnsAsync(Result.Ok(petFound));
 
             // Act
@@ -43,7 +43,7 @@ namespace PetHub.AppService.Tests.UseCases.Queries
 
             _petRepository.Verify
             (
-                x => x.GetAsync(id), Times.Once()
+                x => x.GetByIdAsync(id), Times.Once()
             );
         }
     }
