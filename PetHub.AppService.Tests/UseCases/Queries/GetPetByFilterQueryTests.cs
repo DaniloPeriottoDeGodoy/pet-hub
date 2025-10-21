@@ -1,7 +1,7 @@
 ﻿using FluentResults;
 using Moq;
 using NUnit.Framework;
-using PetHub.AppService.UseCases.Pet.Get;
+using PetHub.AppService.UseCases.Pet.Queries;
 using PetHub.Domain.Entities;
 using PetHub.Domain.Enums;
 using PetHub.Domain.Interfaces;
@@ -30,10 +30,14 @@ namespace PetHub.AppService.Tests.UseCases.Queries
 
             var query = new GetPetByFilterQuery(nameForSearch);
 
-            var petFound = new Pet("Buddy", Species.Dog) { Id = Guid.NewGuid() };
+            var listOfPetsFound = new List<Pet>
+            {
+                new Pet("Buddy", Species.Dog) { Id = Guid.NewGuid() }
+            };
+
             _petRepository
                 .Setup(x => x.GetByFilterAsync(nameForSearch))
-                .ReturnsAsync(Result.Ok(petFound));
+                .ReturnsAsync(Result.Ok(listOfPetsFound));
 
             // Act
             Result<List<Pet>> result = await _handler.Handle(query);

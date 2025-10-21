@@ -1,0 +1,4 @@
+﻿namespace PetHub.AppService.UseCases.Pet.Queries
+{
+    public record class GetPetByFilterQuery(string name);
+}
