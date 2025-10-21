@@ -1,6 +1,6 @@
-﻿using PetHub.Domain.Enums;
+﻿using PetHub.AppService.DTOs;
 
 namespace PetHub.AppService.UseCases.Pet.Queries
 {
-    public record class GetPetByFilterQuery(string name, Species specie, Status status);
+    public record class GetPetByFilterQuery(FilterPetDTO filter);
 }

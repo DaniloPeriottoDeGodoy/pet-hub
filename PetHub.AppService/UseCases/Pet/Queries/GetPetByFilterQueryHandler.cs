@@ -14,7 +14,7 @@ namespace PetHub.AppService.UseCases.Pet.Queries
 
         public async Task<Result<List<Domain.Entities.Pet>>> Handle(GetPetByFilterQuery query)
         {
-            var result = await _petRepository.GetByFilterAsync(query.name, query.specie, query.status);
+            var result = await _petRepository.GetByFilterAsync(query.filter.Name, query.filter.Specie, query.filter.Status);
 
             return Result.Ok(result.Value);
         }
