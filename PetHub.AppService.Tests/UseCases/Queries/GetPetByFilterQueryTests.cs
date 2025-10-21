@@ -28,7 +28,7 @@ namespace PetHub.AppService.Tests.UseCases.Queries
             // Arrange            
             var nameForSearch = "Buddy";
 
-            var query = new GetPetByFilterQuery(nameForSearch, Species.Undefined);
+            var query = new GetPetByFilterQuery(nameForSearch, Species.Undefined, Status.All);
 
             var listOfPetsFound = new List<Pet>
             {
@@ -36,7 +36,7 @@ namespace PetHub.AppService.Tests.UseCases.Queries
             };
 
             _petRepository
-                .Setup(x => x.GetByFilterAsync(nameForSearch, It.IsAny<Species>()))
+                .Setup(x => x.GetByFilterAsync(nameForSearch, It.IsAny<Species>(), It.IsAny<Status>()))
                 .ReturnsAsync(Result.Ok(listOfPetsFound));
 
             // Act
@@ -48,7 +48,7 @@ namespace PetHub.AppService.Tests.UseCases.Queries
 
             _petRepository.Verify
             (
-                x => x.GetByFilterAsync(It.IsAny<string>(), It.IsAny<Species>()), Times.Once()
+                x => x.GetByFilterAsync(It.IsAny<string>(), It.IsAny<Species>(), It.IsAny<Status>()), Times.Once()
             );
         }
 
@@ -57,7 +57,7 @@ namespace PetHub.AppService.Tests.UseCases.Queries
         {
             // Arrange            
             var specieSearch = Species.Dog;
-            var query = new GetPetByFilterQuery(null, specieSearch);
+            var query = new GetPetByFilterQuery(null, specieSearch, Status.All);
 
             var listOfPetsFound = new List<Pet>
             {
@@ -67,7 +67,7 @@ namespace PetHub.AppService.Tests.UseCases.Queries
             };
 
             _petRepository
-                .Setup(x => x.GetByFilterAsync(null, It.IsAny<Species>()))
+                .Setup(x => x.GetByFilterAsync(null, It.IsAny<Species>(), It.IsAny<Status>()))
                 .ReturnsAsync(Result.Ok(listOfPetsFound));
 
             // Act
@@ -79,7 +79,39 @@ namespace PetHub.AppService.Tests.UseCases.Queries
 
             _petRepository.Verify
             (
-                x => x.GetByFilterAsync(It.IsAny<string>(), It.IsAny<Species>()), Times.Once()
+                x => x.GetByFilterAsync(It.IsAny<string>(), It.IsAny<Species>(), It.IsAny<Status>()), Times.Once()
+            );
+        }
+
+        [Test]
+        public async Task Should_Get_Pet_Filtering_By_Status()
+        {
+            // Arrange            
+            var statusSearch = Status.Available;
+            var query = new GetPetByFilterQuery(null, Species.Undefined, statusSearch);
+
+            var listOfPetsFound = new List<Pet>
+            {
+                new Pet("Buddy", Species.Dog) { Id = Guid.NewGuid(), Status = Status.Available },
+                new Pet("Puppy", Species.Dog) { Id = Guid.NewGuid(), Status = Status.Available },
+                new Pet("Bilu", Species.Dog) { Id = Guid.NewGuid(), Status = Status.Available},
+                new Pet("Meoow", Species.Cat) { Id = Guid.NewGuid(), Status = Status.Available }
+            };
+
+            _petRepository
+                .Setup(x => x.GetByFilterAsync(null, It.IsAny<Species>(), It.IsAny<Status>()))
+                .ReturnsAsync(Result.Ok(listOfPetsFound));
+
+            // Act
+            Result<List<Pet>> result = await _handler.Handle(query);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.IsSuccess, Is.True);
+
+            _petRepository.Verify
+            (
+                x => x.GetByFilterAsync(It.IsAny<string>(), It.IsAny<Species>(), It.IsAny<Status>()), Times.Once()
             );
         }
     }

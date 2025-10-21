@@ -30,6 +30,7 @@ namespace PetHub.Domain.Entities
         public Guid Id { get; set; }
         public string Name { get; set; }
         public Species Specie { get; }
+        public Status Status { get; set; }
 
         public bool IsInvalid => Errors.Any();
 
