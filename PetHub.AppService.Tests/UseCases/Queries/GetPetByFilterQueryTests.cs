@@ -1,0 +1,51 @@
+﻿using FluentResults;
+using Moq;
+using NUnit.Framework;
+using PetHub.AppService.UseCases.Pet.Get;
+using PetHub.Domain.Entities;
+using PetHub.Domain.Enums;
+using PetHub.Domain.Interfaces;
+
+namespace PetHub.AppService.Tests.UseCases.Queries
+{
+    [TestFixture]
+    public class GetPetByFilterQueryTests
+    {
+        private GetPetByFilterQueryHandler _handler;
+        private Mock<IPetRepository> _petRepository;
+
+        [SetUp]
+        public void Setup()
+        {
+            _petRepository = new Mock<IPetRepository>();
+
+            _handler = new GetPetByFilterQueryHandler(_petRepository.Object);
+        }
+
+        [Test]
+        public async Task Should_Get_Pet_Filtering_By_Name()
+        {
+            // Arrange            
+            var nameForSearch = "Buddy";
+
+            var query = new GetPetByFilterQuery(nameForSearch);
+
+            var petFound = new Pet("Buddy", Species.Dog) { Id = Guid.NewGuid() };
+            _petRepository
+                .Setup(x => x.GetByFilterAsync(nameForSearch))
+                .ReturnsAsync(Result.Ok(petFound));
+
+            // Act
+            Result<List<Pet>> result = await _handler.Handle(query);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.IsSuccess, Is.True);
+
+            _petRepository.Verify
+            (
+                x => x.GetByFilterAsync(It.IsAny<string>()), Times.Once()
+            );
+        }
+    }
+}
