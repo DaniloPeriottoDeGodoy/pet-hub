@@ -28,7 +28,7 @@ namespace PetHub.AppService.Tests.UseCases.Queries
             // Arrange            
             var nameForSearch = "Buddy";
 
-            var query = new GetPetByFilterQuery(nameForSearch);
+            var query = new GetPetByFilterQuery(nameForSearch, Species.Undefined);
 
             var listOfPetsFound = new List<Pet>
             {
@@ -36,7 +36,7 @@ namespace PetHub.AppService.Tests.UseCases.Queries
             };
 
             _petRepository
-                .Setup(x => x.GetByFilterAsync(nameForSearch))
+                .Setup(x => x.GetByFilterAsync(nameForSearch, It.IsAny<Species>()))
                 .ReturnsAsync(Result.Ok(listOfPetsFound));
 
             // Act
@@ -48,7 +48,7 @@ namespace PetHub.AppService.Tests.UseCases.Queries
 
             _petRepository.Verify
             (
-                x => x.GetByFilterAsync(It.IsAny<string>()), Times.Once()
+                x => x.GetByFilterAsync(It.IsAny<string>(), It.IsAny<Species>()), Times.Once()
             );
         }
 
