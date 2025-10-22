@@ -55,7 +55,7 @@ namespace PetHub.AppService.Tests.UseCases.Commands
         }
 
         [Test]
-        public async Task When_Updating_Should_Obtain_Pet_By_Id()
+        public async Task Should_Call_GetById_When_Handling_UpdatePetCommand()
         {
             // Arrange
             var name = "Pretinha mudou de nome";
