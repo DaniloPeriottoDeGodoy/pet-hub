@@ -6,11 +6,6 @@ namespace PetHub.AppService.UseCases.Pet.Commands
 {
     public class UpdatePetCommand : IRequest<Result>
     {
-        public UpdatePetCommand()
-        {
-            
-        }
-
         public UpdatePetCommand(Guid id, string name, Species specie)
         {
             Id = id;

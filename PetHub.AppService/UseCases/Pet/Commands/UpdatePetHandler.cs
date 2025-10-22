@@ -14,7 +14,14 @@ namespace PetHub.AppService.UseCases.Pet.Commands
 
         public async Task<Result> Handle(UpdatePetCommand command, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var pet = new Domain.Entities.Pet(command.Name, command.Specie)
+            {
+                Status = Domain.Enums.Status.Available
+            };
+
+            var result = await _petRepository.UpdateAsync(pet);
+
+            return Result.Ok();
         }
     }
 }
