@@ -2,9 +2,9 @@
 
 namespace PetHub.AppService.DTOs
 {
-    public class FilterPetDTO
+    public class FilterPetRequest
     {
-        public FilterPetDTO(string? name, Species specie, Status status)
+        public FilterPetRequest(string? name, Species specie, Status status)
         {
             Name = name;
             Specie = specie;

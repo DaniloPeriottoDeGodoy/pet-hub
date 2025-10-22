@@ -29,7 +29,7 @@ namespace PetHub.AppService.Tests.UseCases.Queries
             // Arrange            
             var nameForSearch = "Buddy";
 
-            var filter = new FilterPetDTO(nameForSearch, Species.Undefined, Status.All);
+            var filter = new FilterPetRequest(nameForSearch, Species.Undefined, Status.All);
             var query = new GetPetByFilterQuery(filter);
 
             var listOfPetsFound = new List<Pet>
@@ -59,7 +59,7 @@ namespace PetHub.AppService.Tests.UseCases.Queries
         {
             // Arrange            
             var specieSearch = Species.Dog;
-            var filter = new FilterPetDTO(null, specieSearch, Status.All);
+            var filter = new FilterPetRequest(null, specieSearch, Status.All);
 
             var query = new GetPetByFilterQuery(filter);
 
@@ -92,7 +92,7 @@ namespace PetHub.AppService.Tests.UseCases.Queries
         {
             // Arrange            
             var statusSearch = Status.Available;
-            var filter = new FilterPetDTO(null, Species.Undefined, statusSearch);
+            var filter = new FilterPetRequest(null, Species.Undefined, statusSearch);
             
             var query = new GetPetByFilterQuery(filter);
 

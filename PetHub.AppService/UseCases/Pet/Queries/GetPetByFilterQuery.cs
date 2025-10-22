@@ -2,5 +2,5 @@
 
 namespace PetHub.AppService.UseCases.Pet.Queries
 {
-    public record class GetPetByFilterQuery(FilterPetDTO filter);
+    public record class GetPetByFilterQuery(FilterPetRequest filter);
 }
