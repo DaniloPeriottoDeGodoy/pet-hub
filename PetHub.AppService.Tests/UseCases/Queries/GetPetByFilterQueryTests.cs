@@ -147,5 +147,32 @@ namespace PetHub.AppService.Tests.UseCases.Queries
                 x => x.GetByFilterAsync(It.IsAny<string>(), It.IsAny<Species>(), It.IsAny<Status>()), Times.Once()
             );
         }
+
+        [Test]
+        public async Task Should_Return_Error_When_Throw_Exception()
+        {
+            // Arrange                        
+            var filter = new FilterPetRequest("MyPetNotFound", Species.Dog, Status.Available);
+
+            var query = new GetPetByFilterQuery(filter);
+
+            _petRepository
+                .Setup(x => x.GetByFilterAsync(It.IsAny<string>(), It.IsAny<Species>(), It.IsAny<Status>()))
+                .ThrowsAsync(new Exception("Database Error"));
+
+            // Act
+            Result<List<Pet>> result = await _handler.Handle(query);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.IsFailed, Is.True);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors.First().Message, Is.EqualTo("Database Error"));
+
+            _petRepository.Verify
+            (
+                x => x.GetByFilterAsync(It.IsAny<string>(), It.IsAny<Species>(), It.IsAny<Status>()), Times.Once()
+            );
+        }
     }
 }
