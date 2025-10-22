@@ -36,11 +36,33 @@ namespace PetHub.AppService.Tests.UseCases.Commands
 
             // Assert
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.IsSuccess, Is.True);            
+            Assert.That(result.IsSuccess, Is.True);
 
             _petRepository.Verify
             (
                 x => x.UpdateAsync(It.Is<Pet>(p => p.Name == command.Name)), Times.Once()
+            );
+        }
+
+        [Test]
+        public async Task When_Updating_Should_Obtain_Pet_By_Id()
+        {
+            // Arrange
+            var name = "Pretinha mudou de nome";
+            var id = Guid.NewGuid();
+
+            var command = new UpdatePetCommand(id, name, Species.Dog);
+
+            // Act
+            var result = await _handler.Handle(command, default);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.IsSuccess, Is.True);
+
+            _petRepository.Verify
+            (
+                x => x.GetByIdAsync(It.IsAny<Guid>()), Times.Once
             );
         }
     }
