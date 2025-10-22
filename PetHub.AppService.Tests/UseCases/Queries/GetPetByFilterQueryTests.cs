@@ -130,7 +130,7 @@ namespace PetHub.AppService.Tests.UseCases.Queries
             var query = new GetPetByFilterQuery(filter);
 
             _petRepository
-                .Setup(x => x.GetByFilterAsync(null, It.IsAny<Species>(), It.IsAny<Status>()))
+                .Setup(x => x.GetByFilterAsync(It.IsAny<string>(), It.IsAny<Species>(), It.IsAny<Status>()))
                 .ReturnsAsync(Result.Fail<List<Pet>>("Not found any pet with this filter"));
 
             // Act
@@ -140,7 +140,7 @@ namespace PetHub.AppService.Tests.UseCases.Queries
             Assert.That(result, Is.Not.Null);
             Assert.That(result.IsFailed, Is.True);
             Assert.That(result.Errors.Count, Is.EqualTo(1));
-            Assert.That(result.Errors.Select(x=> x.Message), Is.EqualTo("Not found any pet with this filter"));
+            Assert.That(result.Errors.First().Message, Is.EqualTo("Not found any pet with this filter"));
 
             _petRepository.Verify
             (

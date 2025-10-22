@@ -16,6 +16,9 @@ namespace PetHub.AppService.UseCases.Pet.Queries
         {
             var result = await _petRepository.GetByFilterAsync(query.filter.Name, query.filter.Specie, query.filter.Status);
 
+            if (result.IsFailed)
+                return Result.Fail(result.Errors);
+
             return Result.Ok(result.Value);
         }
     }
