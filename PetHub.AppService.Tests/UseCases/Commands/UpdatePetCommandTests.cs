@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using FluentResults;
+using Moq;
 using NUnit.Framework;
 using PetHub.AppService.UseCases.Pet.Commands;
 using PetHub.AppService.UseCases.Pet.Create;
@@ -29,7 +30,16 @@ namespace PetHub.AppService.Tests.UseCases.Commands
             var name = "Pretinha mudou de nome";
             var id = Guid.NewGuid();
 
-            var command = new UpdatePetCommand(id, name, Species.Dog);
+            var command = new UpdatePetCommand(id, name, Species.Dog, Status.Available);
+
+            var petFound = new Pet("Pretinha", Species.Dog)
+            {
+                Status = Status.Available
+            };
+
+            _petRepository
+                .Setup(x => x.GetByIdAsync(id))
+                .ReturnsAsync(Result.Ok(petFound));
 
             // Act
             var result = await _handler.Handle(command, default);
@@ -51,7 +61,16 @@ namespace PetHub.AppService.Tests.UseCases.Commands
             var name = "Pretinha mudou de nome";
             var id = Guid.NewGuid();
 
-            var command = new UpdatePetCommand(id, name, Species.Dog);
+            var command = new UpdatePetCommand(id, name, Species.Dog, Status.Available);
+
+            var petFound = new Pet("Pretinha", Species.Dog)
+            {
+                Status = Status.Available
+            };
+
+            _petRepository
+                .Setup(x => x.GetByIdAsync(id))
+                .ReturnsAsync(Result.Ok(petFound));
 
             // Act
             var result = await _handler.Handle(command, default);
